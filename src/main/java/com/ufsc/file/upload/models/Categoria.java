@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author RC_Veurant
+ * @author RC_Ventura
  */
 @Entity  
 public class Categoria implements Serializable {

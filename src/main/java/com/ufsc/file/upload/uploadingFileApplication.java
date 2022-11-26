@@ -1,6 +1,6 @@
 package com.ufsc.file.upload;
 
-import com.ufsc.file.upload.services.FileUploadService;
+import com.ufsc.file.upload.services.FileStorageService;
 import com.ufsc.file.upload.util.StorageProperties;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,10 +18,10 @@ public class uploadingFileApplication {
 
         
         @Bean
-        CommandLineRunner init(FileUploadService fileUploadService) {
+        CommandLineRunner init(FileStorageService fileStorageService) {
             return (args) -> {
-                fileUploadService.deleteAll();
-                fileUploadService.init();
+                fileStorageService.deleteAll();
+                fileStorageService.init();
             };
         }
 }

@@ -4,7 +4,7 @@ package com.ufsc.file.upload.controllers;
 
 
 import com.ufsc.file.upload.models.Categoria;
-import com.ufsc.file.upload.services.CategoriaService;
+import com.ufsc.file.upload.services.imp.CategoriaImp;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,25 +28,29 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @CrossOrigin("http://localhost:3000")
 public class CategoriaController {
 	
-	@Autowired
-	private CategoriaService categoriaService;
+	private final CategoriaImp categoriaImp;
+    
+    @Autowired
+    public CategoriaController(CategoriaImp categoriaImp){
+        this.categoriaImp = categoriaImp;
+    }
 	
 	@PutMapping(value = "/categorias/{id}")
 	public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria){
-		Categoria categoriaAtualizado = categoriaService.update(id, categoria);
+		Categoria categoriaAtualizado = categoriaImp.update(id, categoria);
 		return ResponseEntity.ok().body(categoriaAtualizado);
 	}
 	
 	
 	@DeleteMapping(value = "/categorias/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable Long id){
-		categoriaService.deleteById(id);
+		categoriaImp.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping(value = "/categorias")
 	public ResponseEntity<Categoria> save(@RequestBody Categoria categoria){
-		Categoria categoriasSaved = categoriaService.save(categoria);
+		Categoria categoriasSaved = categoriaImp.save(categoria);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/categorias/{id}")
 				.buildAndExpand(categoriasSaved.getId()).toUri();
@@ -57,14 +61,14 @@ public class CategoriaController {
 	@GetMapping(value = "/categorias")
 	public ResponseEntity<List<Categoria>> findAll(){
 		
-		List<Categoria> categorias = categoriaService.findAll();		
+		List<Categoria> categorias = categoriaImp.findAll();		
 		return ResponseEntity.ok().body(categorias);		
 	}
 	
 	@GetMapping(value = "/categorias/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Long id){
 		
-		Categoria c = categoriaService.findById(id);
+		Categoria c = categoriaImp.findById(id);
 		return ResponseEntity.ok().body(c);		
 		
 	}

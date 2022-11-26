@@ -2,8 +2,6 @@
 package com.ufsc.file.upload.controllers;
 
 import com.ufsc.file.upload.services.FileDownloadService;
-import com.ufsc.file.upload.services.FileUploadService;
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

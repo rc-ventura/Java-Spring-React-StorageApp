@@ -2,25 +2,27 @@ package com.ufsc.file.upload.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Produto implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private  static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String nome;
-	private int preco;
-	
+	private int preco;        
 	private int qtd;
         
         
@@ -31,6 +33,9 @@ public class Produto implements Serializable {
          @ManyToOne
          @JoinColumn(name = "id_categoria")
          private Categoria categoria;
+         
+         @OneToMany(mappedBy = "produto")
+         private Set <FileStorage> files = new HashSet<>();
 
 	
 	public Produto() {}
@@ -71,6 +76,7 @@ public class Produto implements Serializable {
     public int getQtd() {
         return qtd;
     }
+    
 
     public void setQtd(int qtd) {
         this.qtd = qtd;
@@ -83,7 +89,12 @@ public class Produto implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
+
+    public Set<FileStorage> getFiles() {
+        return files;
+    }
+
+  
     
 
     @Override

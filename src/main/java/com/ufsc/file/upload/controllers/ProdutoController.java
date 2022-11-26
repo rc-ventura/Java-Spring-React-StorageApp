@@ -1,10 +1,10 @@
 package com.ufsc.file.upload.controllers;
 
 import com.ufsc.file.upload.models.Produto;
-import com.ufsc.file.upload.services.ProdutoService;
+import com.ufsc.file.upload.services.FileStorageService;
+import com.ufsc.file.upload.services.imp.ProdutoImp;
 import java.net.URI;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,43 +22,53 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @CrossOrigin("http://localhost:3000")
 public class ProdutoController {
 	
-	@Autowired
-	private ProdutoService produtoService;
-	
+    private final ProdutoImp produtoImp;
+    
+    @Autowired
+    public ProdutoController(ProdutoImp produtoImp){
+        this.produtoImp = produtoImp;
+    }
+    
+        
+        
 	@PutMapping(value = "/produtos/{id}")
 	public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto produto){
-		Produto produtoAtualizado = produtoService.update(id, produto);
+		Produto produtoAtualizado = produtoImp.update(id, produto);
 		return ResponseEntity.ok().body(produtoAtualizado);
 	}
 	
 	
 	@DeleteMapping(value = "/produtos/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable Long id){
-		produtoService.deleteById(id);
+	public ResponseEntity<String> deleteById(@PathVariable Long id){
+		produtoImp.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping(value = "/produtos")
-	public ResponseEntity<Produto> save(@RequestBody Produto produto){
-		Produto produtosSaved = produtoService.save(produto);
+	public ResponseEntity<Produto> save(@RequestBody Produto produto ){
+		Produto produtosSaved = produtoImp.save(produto);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/produtos/{id}")
 				.buildAndExpand(produtosSaved.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(produtosSaved);		
 	}
+        
+        
+
+    
 	
 	@GetMapping(value = "/produtos")
 	public ResponseEntity<List<Produto>> findAll(){
 		
-		List<Produto> produtos = produtoService.findAll();		
+		List<Produto> produtos = produtoImp.findAll();		
 		return ResponseEntity.ok().body(produtos);		
 	}
 	
 	@GetMapping(value = "/produtos/{id}")
 	public ResponseEntity<Produto> findById(@PathVariable Long id){
 		
-		Produto c = produtoService.findById(id);
+		Produto c = produtoImp.findById(id);
 		return ResponseEntity.ok().body(c);		
 		
 	}

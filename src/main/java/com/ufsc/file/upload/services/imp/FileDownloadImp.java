@@ -1,7 +1,8 @@
 
-package com.ufsc.file.upload.services;
+package com.ufsc.file.upload.services.imp;
 
 import com.ufsc.file.upload.exceptions.StorageException;
+import com.ufsc.file.upload.services.FileDownloadService;
 import com.ufsc.file.upload.util.StorageProperties;
 import java.io.IOException;
 import java.nio.file.Files;
