@@ -74,7 +74,27 @@ public class ProdutoController {
 	}
 	
 	
-	
+        //add FileUpload -> Produto
+        
+	@PutMapping(value = "/produtos/{id_produto}/addFiles/{id_file}")
+         public ResponseEntity<Produto> addFiles(@PathVariable Long id_produto,
+            @PathVariable String id_file) {
+        Produto produto = produtoImp.addFiles(id_produto, id_file);
+        return ResponseEntity.ok().body(produto);
+
+    }
+
+            //delete FileUpload -> Produto
+
+        @DeleteMapping(value = "/produtos/{id_produto}/removeFiles/{id_file}")
+        public ResponseEntity<Produto> removeFiles(@PathVariable Long id_produto,
+            @PathVariable String id_file) {
+        Produto produto = produtoImp.removeFiles(id_produto, id_file);
+        return ResponseEntity.ok().body(produto);
+
+    }
+
+
 	
 
 }

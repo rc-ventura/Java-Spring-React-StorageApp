@@ -4,6 +4,7 @@ package com.ufsc.file.upload.controllers;
 
 
 import com.ufsc.file.upload.models.Categoria;
+import com.ufsc.file.upload.models.Produto;
 import com.ufsc.file.upload.services.imp.CategoriaImp;
 import java.net.URI;
 import java.util.List;
@@ -68,13 +69,32 @@ public class CategoriaController {
 	@GetMapping(value = "/categorias/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Long id){
 		
-		Categoria c = categoriaImp.findById(id);
-		return ResponseEntity.ok().body(c);		
+		Categoria categoria = categoriaImp.findById(id);
+		return ResponseEntity.ok().body(categoria);		
 		
 	}
 	
 	
-	
+	 //add Produto -> Categoria
+        
+	@PutMapping(value = "/categorias/{id_categoria}/addProduto/{id_produto}")
+         public ResponseEntity<Categoria> addProduto (@PathVariable Long id_categoria,
+            @PathVariable Long id_produto) {
+        Categoria categoria = categoriaImp.addProduto(id_categoria, id_produto);
+        return ResponseEntity.ok().body(categoria);
+
+    }
+
+            //delete Produto -> Categoria
+
+        @DeleteMapping(value = "/categorias/{id_categoria}/removeProduto/{id_produto}")
+        public ResponseEntity<Categoria> removeProduto(@PathVariable Long id_categoria,
+            @PathVariable Long id_produto) {
+        Categoria categoria = categoriaImp.removeProduto(id_categoria, id_produto);
+        return ResponseEntity.ok().body(categoria);
+
 	
 
+}
+        
 }

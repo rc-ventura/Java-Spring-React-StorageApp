@@ -1,7 +1,9 @@
 package com.ufsc.file.upload.services.imp;
 
 import com.ufsc.file.upload.exceptions.ProductNotFoundException;
+import com.ufsc.file.upload.models.FileStorage;
 import com.ufsc.file.upload.models.Produto;
+import com.ufsc.file.upload.repositories.FileStorageRepository;
 import com.ufsc.file.upload.repositories.ProdutoRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,7 +19,10 @@ public class ProdutoImp {
 	@Autowired
 	private ProdutoRepository produtoRepository; 
 	
+        @Autowired
+        private FileStorageRepository fileStorageRepository;
 	
+        
 	public Produto update(Long id, Produto produto) {
 		try{
                     Produto produtoEntity = produtoRepository.getReferenceById(id);
@@ -61,5 +66,32 @@ public class ProdutoImp {
 			throw new ProductNotFoundException(id);
 		}
 	}
-	
+
+    public Produto removeFiles(Long id_produto, String id_file) {
+         
+         Produto produto = produtoRepository.findById(id_produto).get();
+         FileStorage fileStorage = fileStorageRepository.findById(id_file).get();
+         
+         produto.getFiles().remove(fileStorage);
+         produtoRepository.save(produto);
+         return produto;
+     }
+
+    public Produto addFiles(Long id_produto, String id_file) {
+       
+        Produto produto = produtoRepository.findById(id_produto).get();
+         FileStorage fileStorage = fileStorageRepository.findById(id_file).get();
+      
+         produto.getFiles().add(fileStorage);
+         fileStorage.setProduto(produto);
+         produtoRepository.save(produto);
+         return produto;
+        
+
 }
+
+    }
+    
+
+    
+    

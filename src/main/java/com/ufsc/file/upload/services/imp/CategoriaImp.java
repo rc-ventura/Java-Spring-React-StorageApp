@@ -2,7 +2,10 @@
 package com.ufsc.file.upload.services.imp;
 
 import com.ufsc.file.upload.models.Categoria;
+import com.ufsc.file.upload.models.FileStorage;
+import com.ufsc.file.upload.models.Produto;
 import com.ufsc.file.upload.repositories.CategoriaRepository;
+import com.ufsc.file.upload.repositories.ProdutoRepository;
 import com.ufsc.file.upload.services.CategoriaService;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,6 +24,10 @@ public class CategoriaImp implements CategoriaService {
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository; 
+        
+        @Autowired
+	private ProdutoRepository produtoRepository; 
+	
 	
 	
 	public Categoria update(Long id, Categoria categoria) {
@@ -54,6 +61,26 @@ public class CategoriaImp implements CategoriaService {
 			throw new EntityNotFoundException("EntityNotFoundException Categoria id: " + id);
 		}
 	}
+
+    public Categoria addProduto(Long id_categoria, Long id_produto) {
+
+         Categoria categoria = categoriaRepository.findById(id_categoria).get();
+         Produto produto = produtoRepository.findById(id_produto).get();
+      
+         categoria.getProdutos().add(produto);
+         categoriaRepository.save(categoria);
+         return categoria;
+    }
+
+    public Categoria removeProduto(Long id_categoria, Long id_produto) {
+        
+         Categoria categoria = categoriaRepository.findById(id_categoria).get();
+         Produto produto = produtoRepository.findById(id_produto).get();
+         
+         categoria.getProdutos().remove(produto);
+         categoriaRepository.save(categoria);
+         return categoria;
+    }
 	
 }
 
