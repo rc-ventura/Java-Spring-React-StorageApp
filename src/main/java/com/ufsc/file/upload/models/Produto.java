@@ -2,7 +2,6 @@ package com.ufsc.file.upload.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -12,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Produto implements Serializable {
@@ -29,25 +29,28 @@ public class Produto implements Serializable {
         //relacionamentos
         
         
-         @JsonIgnore
-         @ManyToOne
+         @ManyToOne 
          @JoinColumn(name = "id_categoria")
          private Categoria categoria;
          
-         @OneToMany(mappedBy = "produto")
-         private Set <FileStorage> files = new HashSet<>();
+         @OneToOne
+         @JoinColumn(name = "id_fileStorage")
+         private FileStorage fileStorage;
 
 	
 	public Produto() {}
+
 	
-	public Produto(Long id, String nome, int preco, int qtd, Categoria categoria) {
+	public Produto(Long id, String nome, int preco, int qtd, Categoria categoria, FileStorage fileStorage ) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
 		this.qtd = qtd;
 		this.categoria = categoria;
-	}
+                this.fileStorage =  fileStorage;
+                
+        }
 
 	public Long getId() {
 		return id;
@@ -77,7 +80,8 @@ public class Produto implements Serializable {
         return qtd;
     }
     
-
+    
+    
     public void setQtd(int qtd) {
         this.qtd = qtd;
     }
@@ -90,8 +94,16 @@ public class Produto implements Serializable {
         this.categoria = categoria;
     }
 
-    public Set<FileStorage> getFiles() {
-        return files;
+    
+    
+    
+    public FileStorage getFile() {
+        return fileStorage;
+    }
+    
+
+    public void setFiles(FileStorage fileStorage) {
+        this.fileStorage = fileStorage;
     }
 
   

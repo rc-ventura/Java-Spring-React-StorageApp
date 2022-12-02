@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -17,8 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
  * @author RC_Ventura
  */
 @Entity
-public class FileStorage implements Serializable {
-    private static final long serialVersionUID= 1L;
+public class FileStorage  {
     
   @Id
   @GeneratedValue (generator = "uuid")
@@ -35,15 +36,10 @@ public class FileStorage implements Serializable {
   
   //relacionamentos
  
-  @JsonIgnore
-  @ManyToOne
-  @JoinColumn(name = "produto_id")
-  private Produto produto;
 
   public FileStorage() {}
   
-  public FileStorage( String id, String name, String type, byte[] data, Long size) {
-        this.id = id;
+  public FileStorage(  String name, String type, byte[] data, Long size) {
         this.name = name;
         this.type = type;
         this.data = data;
@@ -92,14 +88,7 @@ public class FileStorage implements Serializable {
         this.data = data;
     }
 
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
+    
     
     
     @Override

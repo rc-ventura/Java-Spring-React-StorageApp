@@ -7,6 +7,7 @@ import com.ufsc.file.upload.repositories.FileStorageRepository;
 import com.ufsc.file.upload.repositories.ProdutoRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class ProdutoImp {
 		produtoEntity.setNome(produto.getNome());
 		produtoEntity.setPreco(produto.getPreco());
 		produtoEntity.setQtd(produto.getQtd());
+                produtoEntity.setCategoria(produto.getCategoria());
         
 		
 		return produtoRepository.save(produtoEntity);		
@@ -72,7 +74,7 @@ public class ProdutoImp {
          Produto produto = produtoRepository.findById(id_produto).get();
          FileStorage fileStorage = fileStorageRepository.findById(id_file).get();
          
-         produto.getFiles().remove(fileStorage);
+         produto.setFiles(fileStorage);
          produtoRepository.save(produto);
          return produto;
      }
@@ -82,8 +84,7 @@ public class ProdutoImp {
         Produto produto = produtoRepository.findById(id_produto).get();
          FileStorage fileStorage = fileStorageRepository.findById(id_file).get();
       
-         produto.getFiles().add(fileStorage);
-         fileStorage.setProduto(produto);
+         produto.setFiles(fileStorage);
          produtoRepository.save(produto);
          return produto;
         

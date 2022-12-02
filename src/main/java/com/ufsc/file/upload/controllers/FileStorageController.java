@@ -47,12 +47,12 @@ public class FileStorageController {
     
     
     @PostMapping("/upload")
-    public ResponseEntity <FileStorage> upload (@RequestParam ("file") MultipartFile multipartFile)
+    public ResponseEntity <FileStorage> upload (@RequestParam ("file") MultipartFile file)
      throws IOException {
         
      
-        FileStorage fileStorage = fileStorageImp.store(multipartFile);
-        return new ResponseEntity(fileStorage, HttpStatus.OK);
+        FileStorage fileStorage = fileStorageImp.store(file);
+        return  ResponseEntity.status(HttpStatus.OK).body(fileStorage);
     }         
     
    
@@ -69,29 +69,15 @@ public class FileStorageController {
        
      } 
      
-     //metodo apenas lista como string 
-     //implementar um metodo de findAll stream
+     	@GetMapping(value = "/files")
+	public ResponseEntity<List<FileStorage>> listUploadedFilesAll() {
+		List<FileStorage> files = (List<FileStorage>) fileStorageImp.listUploadedFilesAll().toList();
+		return ResponseEntity.ok().body(files);
+	}
      
-     @GetMapping(value = "/files")
-	public ResponseEntity<List<FileStorage>> listUploadedFiles(){
-		
-		List<FileStorage> fileStorage = fileStorageImp.findAll();		
-		return ResponseEntity.ok().body(fileStorage);		
-	
-   /*  
-    @RequestMapping(value = "/files", method = RequestMethod.GET)
-    @ResponseBody
-     public void  listUploadedFilesAll(HttpServletResponse response) throws IOException{
-        
-       FileStorage fileStorage = (FileStorage) fileStorageImp.findAll();
+   
        
-       response.setContentType(fileStorage.getType());
-       response.getOutputStream().write(fileStorage.getData());
-       response.getOutputStream().close();
        
-     }     
-        */
-        }
        @PutMapping(value = "/files/{id}")
 	public ResponseEntity<FileStorage> updateFiles(@PathVariable String id, 
                 @RequestParam ("file" )MultipartFile multipartFile)  throws IOException {

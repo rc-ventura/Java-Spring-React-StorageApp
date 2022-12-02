@@ -3,6 +3,7 @@ package com.ufsc.file.upload.services.imp;
 import com.ufsc.file.upload.exceptions.StorageException;
 import com.ufsc.file.upload.exceptions.StorageFileNotFoundException;
 import com.ufsc.file.upload.models.FileStorage;
+import com.ufsc.file.upload.models.Produto;
 import com.ufsc.file.upload.repositories.FileStorageRepository;
 import com.ufsc.file.upload.services.FileStorageService;
 import com.ufsc.file.upload.util.StorageProperties;
@@ -11,7 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
@@ -50,21 +53,21 @@ public class FileStorageImp implements FileStorageService {
     }
 
     @Override
-    public FileStorage store( MultipartFile multipartFile) {
+    public FileStorage store( MultipartFile file) {
         try {
-            if (multipartFile.isEmpty()) {
-                throw new StorageException("Failed to store empty file" + multipartFile.getOriginalFilename());
+            if (file.isEmpty()) {
+                throw new StorageException("Failed to store empty file" + file.getOriginalFilename());
             }
             
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            FileStorage fileStorage = new FileStorage(null, fileName, 
-                    multipartFile.getContentType(), multipartFile.getBytes(), multipartFile.getSize());
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            FileStorage fileStorage = new FileStorage( fileName, 
+                    file.getContentType(), file.getBytes(), file.getSize());
             
          
             return fileStorageRepository.save(fileStorage);
 
         } catch (IOException e) {
-            throw new StorageException("Failed to store file" + multipartFile.getOriginalFilename(), e);
+            throw new StorageException("Failed to store file" + file.getOriginalFilename(), e);
         }
     }
 
@@ -146,7 +149,13 @@ public class FileStorageImp implements FileStorageService {
         
     }
 
-   public List<FileStorage> findAll() {
-         return fileStorageRepository.findAll();
+    
+	public Stream <FileStorage> listUploadedFilesAll() {
+		return fileStorageRepository.findAll().stream();
+	}
+
+   
+
+    
     }
-}
+
