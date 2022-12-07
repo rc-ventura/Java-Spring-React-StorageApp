@@ -69,6 +69,18 @@ public class FileStorageController {
        
      } 
      
+     
+     @RequestMapping(value = "/returnFiles/{id}", method = RequestMethod.GET)
+     @ResponseBody
+     public ResponseEntity<FileStorage>  responseFindById(@PathVariable String id )
+             throws IOException{
+        
+       FileStorage file = fileStorageImp.responseFindById(id);
+       
+      return ResponseEntity.ok().body(file);
+       
+     } 
+     
      	@GetMapping(value = "/files")
 	public ResponseEntity<List<FileStorage>> listUploadedFilesAll() {
 		List<FileStorage> files = (List<FileStorage>) fileStorageImp.listUploadedFilesAll().toList();

@@ -39,9 +39,10 @@ public interface FileStorageService {
      
      public String deleteById(String id) ;
            
-public Stream <FileStorage> listUploadedFilesAll() ;	
+    public Stream <FileStorage> listUploadedFilesAll() ;	
 		
-	
+    public FileStorage responseFindById(String id) ;
+
 
 	public FileStorage findById(String id) ;		
 		

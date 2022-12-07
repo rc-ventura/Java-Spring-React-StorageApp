@@ -4,6 +4,7 @@ package com.ufsc.file.upload.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,8 +21,9 @@ import org.hibernate.annotations.GenericGenerator;
  * @author RC_Ventura
  */
 @Entity
-public class FileStorage  {
-    
+public class FileStorage implements Serializable  {
+ private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue (generator = "uuid")
   @GenericGenerator(name= "uuid", strategy = "uuid2")
@@ -36,10 +39,15 @@ public class FileStorage  {
   
   //relacionamentos
  
-
+   @JsonIgnore
+  @OneToOne(mappedBy = "fileStorage")
+  private Produto produto;
+  
+  
   public FileStorage() {}
   
-  public FileStorage(  String name, String type, byte[] data, Long size) {
+  public FileStorage( String id , String name, String type, byte[] data, Long size) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.data = data;
@@ -60,6 +68,17 @@ public class FileStorage  {
         return size;
     }
 
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    
+    
+    
     public void setSize(Long size) {
         this.size = size;
     }

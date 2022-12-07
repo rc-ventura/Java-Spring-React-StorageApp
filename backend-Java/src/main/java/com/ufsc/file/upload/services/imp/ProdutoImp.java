@@ -33,6 +33,7 @@ public class ProdutoImp {
 		produtoEntity.setPreco(produto.getPreco());
 		produtoEntity.setQtd(produto.getQtd());
                 produtoEntity.setCategoria(produto.getCategoria());
+                produtoEntity.setFileStorage(produto.getFileStorage());
         
 		
 		return produtoRepository.save(produtoEntity);		
@@ -74,7 +75,7 @@ public class ProdutoImp {
          Produto produto = produtoRepository.findById(id_produto).get();
          FileStorage fileStorage = fileStorageRepository.findById(id_file).get();
          
-         produto.setFiles(fileStorage);
+         produto.setFileStorage(fileStorage);
          produtoRepository.save(produto);
          return produto;
      }
@@ -84,7 +85,7 @@ public class ProdutoImp {
         Produto produto = produtoRepository.findById(id_produto).get();
          FileStorage fileStorage = fileStorageRepository.findById(id_file).get();
       
-         produto.setFiles(fileStorage);
+         produto.setFileStorage(fileStorage);
          produtoRepository.save(produto);
          return produto;
         

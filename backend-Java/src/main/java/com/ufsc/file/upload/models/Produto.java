@@ -97,12 +97,12 @@ public class Produto implements Serializable {
     
     
     
-    public FileStorage getFile() {
+    public FileStorage getFileStorage() {
         return fileStorage;
     }
     
 
-    public void setFiles(FileStorage fileStorage) {
+    public void setFileStorage(FileStorage fileStorage) {
         this.fileStorage = fileStorage;
     }
 

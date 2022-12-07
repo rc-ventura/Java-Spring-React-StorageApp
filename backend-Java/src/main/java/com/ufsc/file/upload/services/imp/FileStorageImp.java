@@ -60,7 +60,7 @@ public class FileStorageImp implements FileStorageService {
             }
             
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            FileStorage fileStorage = new FileStorage( fileName, 
+            FileStorage fileStorage = new FileStorage(null, fileName, 
                     file.getContentType(), file.getBytes(), file.getSize());
             
          
@@ -121,7 +121,7 @@ public class FileStorageImp implements FileStorageService {
                    fileStorageEntity.setType(multipartFile.getContentType());
 		   fileStorageEntity.setSize(multipartFile.getSize());
 		   fileStorageEntity.setData(multipartFile.getBytes());
-            
+                   
          
             return fileStorageRepository.save(fileStorageEntity);
         
@@ -143,7 +143,7 @@ public class FileStorageImp implements FileStorageService {
             return "File with id " +id+ "has been deleted sucess.";
 	}    
 
-    public FileStorage findById(String id) {
+    public FileStorage responseFindById(String id) {
         
         return fileStorageRepository.findById(id).get();
         
@@ -154,7 +154,12 @@ public class FileStorageImp implements FileStorageService {
 		return fileStorageRepository.findAll().stream();
 	}
 
-   
+    @Override
+    public FileStorage findById(String id) {
+        return fileStorageRepository.findById(id).get();
+    }
+
+    
 
     
     }
