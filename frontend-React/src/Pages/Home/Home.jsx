@@ -11,7 +11,6 @@ export default function Home() {
     
 
 
-
     useEffect(() => {
         loadProducts();
 
@@ -30,8 +29,7 @@ export default function Home() {
     }
 
    
-   
-        
+
     
 
     return (
@@ -61,7 +59,7 @@ export default function Home() {
                                     <th scope="row" key ={index}> {index+1}</th>
                                     
                                     
-                                    <td ></td>
+                                    <td ><img src={`data:${product.file_type};base64,${product.file_data}`} alt= "foto do produto" width={70} height={70}></img></td>
                                             
                                     <td>{product.nome}</td>
                                     <td>{product.preco}</td>

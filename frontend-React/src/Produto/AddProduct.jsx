@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import UploadFileService from '../Services/UploadFile';
+import Upload from '../Components/Upload/upload';
 
 
 
@@ -16,60 +16,16 @@ export default function AddProduct() {
         nome: "",
         preco: "",
         qtd: "",
-        categoria: "",
-        fileStorage: []
+        categoria: [],
+        fileStorage: [],
+        id: "",
+        arquivo: undefined,
 
 
 
     });
 
 
-    const [file, setFile] = useState('');
-
-    function handleChangeFile(e) {
-       setFile(e.target.files[0]);
-        handleSubmitFile();
-    }
-
-
-    const handleSubmitFile = async (e) => {
-        e.preventDefault();                             // funcao para não carregar a página 
-        console.log ('Upload image');
-        console.log(file);
-        
-        UploadFileService.upload(file).then((data) => {console.log(data);
-            setProduct ({ 
-            ...product, fileStorage: {
-                id: data.id,
-                data: data.data,
-                name: data.name,
-                type: data.type,
-            }
-            })
-        });
-        
-    };
-      
-  
-        
-  
-  
-   
-   /*
-        UploadFileService.upload(file).then((data) => { console.log(data)
-            setProduct({
-                ...product, file: {
-                    id: data.id,
-                    data: data.data,
-                    name: data.name,
-                    type: data.type,
-                }
-            })
-        });
-    };
-*/
-
-    
 
 
     const [categorias, setCategorias] = useState([]);
@@ -110,11 +66,26 @@ export default function AddProduct() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:8080/produtos/", product)
+        if (document.getElementById("arquivo").value === "") {
+            alert("Favor adicionar um arquivo");
+        } else {
+
+         const data = await axios.get("http://localhost:8080/returnFiles/"+ document.getElementById("arquivo").value, product);
+
+        const dados = {
+        fileStorage: data.data,
+        nome: e.target.elements.nome.value,
+        preco: e.target.elements.preco.value,
+        qtd: e.target.elements.qtd.value,
+        categoria: product.categoria
+
+        
+      };
+        await axios.post("http://localhost:8080/produtos/", dados)
         navigate("/");
         alert("Produto cadastrado com sucesso");
     };
-
+    }
 
 
     return (
@@ -158,9 +129,9 @@ export default function AddProduct() {
                                 <strong>Categoria</strong>
                             </label>
                             <select onChange={(e) => handleCategory(e)} className="form-select" aria-label='Default select example' name='categoria'>
-                                <option >Select a category</option>
+                                <option selected>Selected a category</option>
                                 {categorias.map((categoria) => (
-                                    <option defaultValue={categoria.id}>{categoria.nome}</option>
+                                    <option value={categoria.id}>{categoria.nome}</option>
 
                                 ))
 
@@ -169,24 +140,14 @@ export default function AddProduct() {
 
                             </select>
                         </div>
+
+                        <Upload />
+
+
                         <button type='submit' className='btn btn-outline-primary'>Submit</button>
                         <Link className='btn btn-outline-danger mx-2' to="/">Cancel</Link>
-                        </form>
+                    </form>
 
-
-                            <div className='mb-5 '>
-                            <form onSubmit={handleSubmitFile} >
-
-                              <label htmlFor='image' className='form-label row md-6 ' > 
-                                <strong>Imagem</strong>     </label> 
-                                <br></br>     
-                                <input type="file" name='image' onChange={(e) => handleChangeFile(e)}  />
-                                <button type='submit' className='btn btn-outline-primary mx-5 ' > Save </button>
-                            </form>
-
-
-
-                        </div>
 
 
                 </div>
@@ -196,3 +157,4 @@ export default function AddProduct() {
 
 
 }
+
