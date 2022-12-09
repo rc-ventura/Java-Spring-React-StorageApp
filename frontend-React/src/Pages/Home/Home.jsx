@@ -53,13 +53,13 @@ export default function Home() {
 
                             {   
                                 
-                                product.map((product ,index)=>(
+                                product.map((product)=>(
 
                                     <tr>
-                                    <th scope="row" key ={index}> {index+1}</th>
+                                    <th scope="row" key ={product.id}> {product.id}</th>
                                     
                                     
-                                    <td ><img src={`data:${product.file_type};base64,${product.file_data}`} alt= "foto do produto" width={70} height={70}></img></td>
+                                    <td ><img src={`data:${product.fileStorage_type};base64,${product.fileStorage_data}`} alt= "foto do produto" width={70} height={70}></img></td>
                                             
                                     <td>{product.nome}</td>
                                     <td>{product.preco}</td>

@@ -1,7 +1,7 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 
@@ -13,9 +13,9 @@ export default function AddCategory() {
 
     ]);
 
-    const [category, setCategory] =useState({
+    const [category, setCategory] = useState({
 
-        
+
         nome: ''
     })
 
@@ -44,7 +44,7 @@ export default function AddCategory() {
     }
 
     const onSubmit = async (e) => {
-    
+
         await axios.post("http://localhost:8080/categorias/", category)
         alert("Categoria cadastrada com sucesso");
     };
@@ -65,12 +65,13 @@ export default function AddCategory() {
                             <input type={"text"} className="form-control" placeholder="Enter with category's name" name='nome'
                                 value={nome} onChange={(e) => onInputChange(e)}
                             />
-
-
+                        
                         </div>
+                        </form>
+                        
                         <button type='submit' className='btn btn-outline-primary'>Submit</button>
                         <Link className='btn btn-outline-danger mx-2' to="/">Cancel</Link>
-                    </form>
+                   
 
 
                     <div className='container'>
@@ -86,34 +87,31 @@ export default function AddCategory() {
 
                                         <th scope="col">Action</th>
 
-
                                     </tr>
                                 </thead>
                                 <tbody>
 
+                                    {categories.map((categories, index) => (
 
 
-                                   
-                                {categories.map((categories, index) =>(
+                                        <tr >
+                                            <th scope="row " key={index}   > {index + 1}</th>
 
-                                        
-                                    <tr >
-                                        <th scope="row " key = {index}   > {index + 1}</th>
+                                            <td >{categories.nome}</td>
+                                            <td></td>
+                                            <td></td>
 
+                                            <td>
 
-                                        <td key={index + 1}>{categories.nome}</td>
-                                        <td></td>
-                                        <td></td>
+                                                <Link className='btn btn-primary mx-2 mb-2 mt-2' to={`/viewCategory/${categories.id}`} >View</Link>
+                                                <Link className='btn btn-outline-primary mx-2 mb-2 mt-2' to={`/editCategory/${categories.id}`} >Edit</Link>
+                                                <button className='btn btn-danger mx-2 mb-2 mt-2' onClick={() => deleteCategory(categories.id)} >Delete</button>
 
-                                        <Link className='btn btn-outline-primary mx-2 mb-2 mt-2' to={`/viewCategory/${categories.id}`} >View</Link>  
-                                        <Link className='btn btn-outline-primary mx-2 mb-2 mt-2' to={`/editCategory/${categories.id}`} >Edit</Link>
-                                        <button className='btn btn-outline-danger mx-2 mb-2 mt-2' onClick={()=>deleteCategory(categories.id)} >Delete</button>
-                                    
+                                            </td>
+                                        </tr>
 
-                                    </tr>
-
-                                ))
-}
+                                    ))
+                                    }
 
 
                                 </tbody>
@@ -122,15 +120,11 @@ export default function AddCategory() {
 
                     </div>
 
-
-
-
                 </div>
 
             </div>
 
         </div>
-
 
     );
 }

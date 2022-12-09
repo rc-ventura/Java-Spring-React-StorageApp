@@ -1,136 +1,113 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React from 'react';
 import axios from "axios";
-import {  Link } from "react-router-dom";
+import { useState } from 'react';
+import  {useNavigate, Link, useParams} from "react-router-dom";
+import { useEffect } from 'react';
 
 
+export default function EditCategory () {
+  
 
-export default function EditCategory() {
+let navigate = useNavigate();
 
-    //let navigate = useNavigate();
+const {id} =useParams();
 
-    const [categories, setCategories] = useState([
-
-    ]);
-
-    const [category, setCategory] =useState({
-
+const [category,setCategory]=useState({
         
-        nome: ''
-    })
+    nome: "",
+    produtos: "",
+});
 
-    const { nome } = category;
 
-    const onInputChange = (e) => {
-        setCategory({ ...category, [e.target.name]: e.target.value });
 
-    };
+const [product, setProduct]= useState ({
 
-    useEffect(() => {
-        loadCategories();
+})
 
-    }, []);
+const{nome} = category;
 
-    const loadCategories = async () => {
+//const [categorias, setCategorias] = useState([]);
 
-        const result = await axios.get("http://localhost:8080/categorias/")
-        setCategories(result.data);
-        console.log(result.data);
-    }
 
-    const deleteCategory = async (id) => {
-        await axios.delete((`http://localhost:8080/categorias/${id}`))
-        loadCategories();
-    }
+//load produtos (UseState produtos)
 
-    const onSubmit = async (e) => {
+
+
+//const handleCategory = (e) => {
+  //setProduct ({...category, produtos: {
+
+    //    id: e.target.value,
+      // nome: e.target.options[e.target.selectedIndex].text
+    //}
     
-        await axios.post("http://localhost:8080/categorias/", category)
-        alert("Categoria cadastrada com sucesso");
-    };
+    //})
+//} 
 
-    return (
-
-
-        <div className='container text-center'>
-            <div className='row'>
-                <div className='col-md-12 offset md-3 border rounded p-6 mt-2 shadow'>
-                    <h2 className='text-center m-4'> Register Category</h2>
-                    <br />
-                    <form onSubmit={(e) => onSubmit(e)}>
-                        <div className='mb-3'>
-                            <label htmlFor='name' className='form-label'>
-                                <strong>Name</strong>
-                            </label>
-                            <input type={"text"} className="form-control" placeholder="Enter with category's name" name='nome'
-                                value={nome} onChange={(e) => onInputChange(e)}
-                            />
+const loadCategorias=async() => {
+    const result = await axios.get(`http://localhost:8080/categorias/${id}`)
+    setCategory(result.data);
+    console.log(result.data);
 
 
-                        </div>
-                        <button type='submit' className='btn btn-outline-primary'>Submit</button>
-                        <Link className='btn btn-outline-danger mx-2' to="/">Cancel</Link>
-                    </form>
-
-
-                    <div className='container'>
-                        <div className='py-5' >
-                            <table className="table  text-center border shadow ">
-                                <thead>
-                                    <tr>
-                                        <th scope="col ">#</th>
-
-                                        <th scope="col">Name</th>
-                                        <th></th>
-                                        <th></th>
-
-                                        <th scope="col">Action</th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-
-
-                                   
-                                {categories.map((categories, index) =>(
-
-                                        
-                                    <tr >
-                                        <th scope="row " key = {index}   > {index + 1}</th>
-
-
-                                        <td key={index + 1}>{categories.nome}</td>
-                                        <td></td>
-                                        <td></td>
-
-                                        <Link className='btn btn-outline-primary mx-2 mb-2 mt-2' to={`/viewCategory/${categories.id}`} >View</Link>
-                                        <Link className='btn btn-outline-primary mx-2 mb-2 mt-2' to={`/editCategory/${categories.id}`} >Edit</Link>
-                                        <button className='btn btn-outline-danger mx-2 mb-2 mt-2' onClick={()=>deleteCategory(categories.id)} >Delete</button>
-                                    
-
-                                    </tr>
-
-                                ))
 }
 
+const onInputChange=(e)=>{
+    setCategory({...category, [e.target.name]: e.target.value});
 
-                                </tbody>
-                            </table>
-                        </div>
+};
 
-                    </div>
+useEffect(()=>{
+
+    loadProducts();
+    loadCategorias();
+},
+
+[]);
 
 
+const onSubmit= async (e)=> {
+    e.preventDefault();
+     await axios.put(`http://localhost:8080/categorias/${id}`, category)
+     navigate("/addCategory");
+     alert("Categoria editada com sucesso");
+};
 
+
+const loadProducts =async() => {
+
+    const result= await axios.get(`http://localhost:8080/produtos/${id}`)
+    setProduct(result.data);
+
+
+}
+
+return (
+
+
+    <div className='container text-center'>
+        <div className='row'>
+            <div className='col-md-6 offset md-3 border rounded p-4 mt-1 shadow'>
+                <h2 className='text-center m-4'> Edit Category</h2>
+                <br />
+               <form   onSubmit={(e) => onSubmit(e)}>
+                <div className='mb-3'>
+                    <label htmlFor='name' className='form-label'>
+                        <strong>Nome</strong>
+                    </label>
+                    <input type={"text"} className="form-control" placeholder='Enter with product name' name='nome'
+                     value={nome} onChange={(e)=>onInputChange(e)}
+                    />
 
                 </div>
+                
+
+              
+                <button type='submit' className='btn btn-outline-primary'>Submit</button>
+                <Link className='btn btn-outline-danger ' to='/addCategory'>Cancel</Link>
+                </form>
 
             </div>
-
         </div>
-
-
-    );
+        </div>
+);
 }
