@@ -43,11 +43,10 @@ export default function AddCategory() {
         loadCategories();
     }
 
-    const onSubmit = async (e) => {
-
+    const onSubmit = async () => {
         await axios.post("http://localhost:8080/categorias/", category)
         alert("Categoria cadastrada com sucesso");
-    };
+    }
 
     return (
 
@@ -67,11 +66,11 @@ export default function AddCategory() {
                             />
                         
                         </div>
-                        </form>
+                        
                         
                         <button type='submit' className='btn btn-outline-primary'>Submit</button>
                         <Link className='btn btn-outline-danger mx-2' to="/">Cancel</Link>
-                   
+                        </form>
 
 
                     <div className='container'>
@@ -95,7 +94,7 @@ export default function AddCategory() {
 
 
                                         <tr >
-                                            <th scope="row " key={index}   > {index + 1}</th>
+                                            <th scope="row " key={index}   > {index +1}</th>
 
                                             <td >{categories.nome}</td>
                                             <td></td>
