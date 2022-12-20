@@ -38,24 +38,27 @@ function App() {
 }
 
 const[newProductList, setNewProductList] = useState([]);
-const[filterTextValue, setFilterTextValue] = useState('');
+const[filterTextValue, setFilterTextValue] = useState('Filter by category');
 
-     const filteredListProduct = newProductList.filter(function(product) {  
+const filteredListProduct = newProductList.filter(function(product) {
 
-    if(filterTextValue === '1') { 
-      console.log(filterTextValue) 
-      
-      return product.categoria.id.includes(filterTextValue )
+  if (filterTextValue === (product.categoria.nome)) {
 
-      
-    } else {
-      return product;
-      
-    }
+    const result =  product;
+    console.log(result)
+   
+    return result;
+
+
+} else {
+
+  return product
+}
+
 
 })
 
-
+console.log (filteredListProduct)
 
   return (
 
@@ -63,10 +66,9 @@ const[filterTextValue, setFilterTextValue] = useState('');
       <Router>
         <Navbar/>
         <FilterProduct  filterValueSelected={onFilterValueSelected}> </FilterProduct>
-        <Home newProductList= {filteredListProduct}></Home>
 
         <Routes>
-          <Route exact path='/' element={<Home />} />
+          <Route exact path='/' element={<Home newProductList= {filteredListProduct}>   </Home>} />
           <Route exact path="/addproduct" element={<AddProduct />} />
           <Route exact path="/addCategory" element={<AddCategory />} />
           <Route exact path="/editCategory/:id" element={<EditCategory/>}/>

@@ -47,7 +47,7 @@ useEffect(()=>{
             
             <option selected>Filter by category</option>
             {categorias.map((categorias) => (
-            <option value={categorias.id}>{categorias.nome}</option>
+            <option value={categorias.nome}>{categorias.nome}</option>
 
             ))
 
